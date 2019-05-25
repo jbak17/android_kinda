@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Trackable::class], version=1)
+@Database(entities = [Trackable::class], version=2)
 abstract class TrackableRoomDatabase: RoomDatabase(){
 
     abstract fun trackableDao(): TrackableDao
