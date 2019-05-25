@@ -26,6 +26,10 @@ android {
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
@@ -40,6 +44,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     def room_version = "2.1.0-alpha07"
+
+    // Logging
+    implementation "org.jetbrains.anko:anko-commons:0.10.8"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -63,4 +70,6 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
+
+
 }
