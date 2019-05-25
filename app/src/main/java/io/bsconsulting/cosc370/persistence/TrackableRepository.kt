@@ -1,6 +1,7 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.persistence
 
 import androidx.lifecycle.LiveData
+import io.bsconsulting.cosc370.model.Trackable
 
 class TrackableRepository (private val trackableDao: TrackableDao){
 

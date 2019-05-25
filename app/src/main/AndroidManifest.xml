@@ -9,10 +9,19 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".AddTrackableActivity">
+        <activity
+                android:name=".activities.DashActivity"
+                android:label="@string/title_activity_dash"
+                android:parentActivityName=".activities.MainActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="io.bsconsulting.cosc370.activities.MainActivity"/>
+        </activity>
+        <activity android:name=".activities.AddTrackableActivity">
         </activity>
         <activity
-                android:name=".MainActivity"
+                android:name=".activities.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

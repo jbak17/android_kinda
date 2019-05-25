@@ -1,9 +1,12 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.persistence
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import io.bsconsulting.cosc370.model.Trackable
+import io.bsconsulting.cosc370.persistence.TrackableRepository
+import io.bsconsulting.cosc370.persistence.TrackableRoomDatabase
 import kotlinx.coroutines.launch
 
 class TrackableViewModel (application: Application): AndroidViewModel(application){

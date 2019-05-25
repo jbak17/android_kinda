@@ -1,10 +1,12 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.persistence
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import io.bsconsulting.cosc370.model.TrackType
+import io.bsconsulting.cosc370.model.Trackable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -26,7 +28,11 @@ abstract class TrackableRoomDatabase: RoomDatabase(){
                     TrackableRoomDatabase::class.java,
                     "trackable_database"
                 ).fallbackToDestructiveMigration()
-                    .addCallback(TrackableDatabaseCallback(scope))
+                    .addCallback(
+                        TrackableDatabaseCallback(
+                            scope
+                        )
+                    )
                     .build()
 
                 INSTANCE = instance
@@ -50,8 +56,10 @@ abstract class TrackableRoomDatabase: RoomDatabase(){
             suspend fun populateDatabase(trackableDao: TrackableDao){
                 trackableDao.deleteAll()
 
-                var trackable1 = Trackable(TrackType.FOOD.type);
-                var trackable2 = Trackable(TrackType.DRINK.type);
+                var trackable1 =
+                    Trackable(TrackType.FOOD.type);
+                var trackable2 =
+                    Trackable(TrackType.DRINK.type);
                 trackableDao.insert(trackable1)
                 trackableDao.insert(trackable2)
             }

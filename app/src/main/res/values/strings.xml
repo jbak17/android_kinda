@@ -8,8 +8,9 @@
 
 
     <string name="activeToggleName">Active</string>
-    <string name="typeName">Item: </string>
-    <string name="frequencyName">Frequency (mins): </string>
+    <string name="typeName">Item:</string>
+    <string name="frequencyName">Frequency (mins):</string>
+    <string name="title_activity_dash">DashActivity</string>
 
 
 </resources>

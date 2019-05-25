@@ -6,15 +6,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_main"
-        tools:context=".activities.MainActivity">
+        tools:showIn="@layout/activity_dash"
+        tools:context=".activities.DashActivity">
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
-             />
+    />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

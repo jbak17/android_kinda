@@ -1,4 +1,4 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
+import io.bsconsulting.cosc370.R
 
 class AddTrackableActivity : AppCompatActivity() {
 

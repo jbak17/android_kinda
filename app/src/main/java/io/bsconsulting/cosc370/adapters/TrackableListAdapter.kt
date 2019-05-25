@@ -1,4 +1,4 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
-import android.widget.ToggleButton
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import io.bsconsulting.cosc370.R
+import io.bsconsulting.cosc370.model.Trackable
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.warn
 

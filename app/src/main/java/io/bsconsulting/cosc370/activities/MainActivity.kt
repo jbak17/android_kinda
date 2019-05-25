@@ -1,4 +1,4 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -11,9 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.bsconsulting.cosc370.R
+import io.bsconsulting.cosc370.model.Trackable
+import io.bsconsulting.cosc370.persistence.TrackableViewModel
+import io.bsconsulting.cosc370.adapters.TrackableListAdapter
 
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,7 +46,9 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             val intent = Intent(this@MainActivity, AddTrackableActivity::class.java)
-            startActivityForResult(intent, newTrackableActivityRequestCode)
+            startActivityForResult(intent,
+                newTrackableActivityRequestCode
+            )
         }
     }
 

@@ -1,4 +1,4 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
