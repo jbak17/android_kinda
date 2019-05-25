@@ -5,4 +5,11 @@
     <string name="hint_type">Activity...</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Not saved because of empty field.</string>
+
+
+    <string name="activeToggleName">Active</string>
+    <string name="typeName">Item: </string>
+    <string name="frequencyName">Frequency (mins): </string>
+
+
 </resources>

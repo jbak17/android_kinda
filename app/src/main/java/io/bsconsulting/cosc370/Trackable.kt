@@ -1,14 +1,17 @@
 package io.bsconsulting.cosc370
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 @Entity(tableName="trackable_table")
 data class Trackable(
     @PrimaryKey
-    @ColumnInfo(name="trackable") val type: String, val active: Boolean = true, val frequency: Int = 60){
+    @ColumnInfo(name="trackable") val type: String, val active: Boolean = true, val frequency: Int = 60): Parcelable {
 
 }
 

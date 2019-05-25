@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        // Adding new category
         if(requestCode == newTrackableActivityRequestCode && resultCode == Activity.RESULT_OK){
             data?.let {
                 val newTrackable = it.getStringExtra(AddTrackableActivity.EXTRA_REPLY)
