@@ -10,7 +10,7 @@ import io.bsconsulting.cosc370.model.Trackable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Trackable::class], version=3)
+@Database(entities = [Trackable::class], version=4)
 abstract class TrackableRoomDatabase: RoomDatabase(){
 
     abstract fun trackableDao(): TrackableDao
@@ -56,12 +56,12 @@ abstract class TrackableRoomDatabase: RoomDatabase(){
             suspend fun populateDatabase(trackableDao: TrackableDao){
                 trackableDao.deleteAll()
 
-                var trackable1 =
-                    Trackable(TrackType.FOOD.type);
-                var trackable2 =
-                    Trackable(TrackType.DRINK.type);
+                var trackable1 = Trackable(TrackType.FOOD.type);
+                var trackable2 = Trackable(TrackType.DRINK.type);
+                var trackable3 = Trackable(TrackType.NAPPY.type);
                 trackableDao.insert(trackable1)
                 trackableDao.insert(trackable2)
+                trackableDao.insert(trackable3)
             }
 
 

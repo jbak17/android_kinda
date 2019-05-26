@@ -5,4 +5,6 @@
     <dimen name="big_padding">16dp</dimen>
 
     <dimen name="list_label_height">36dp</dimen>
+
+    <dimen name="progressBarHeight">36dp</dimen>
 </resources>
