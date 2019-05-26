@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.bsconsulting.cosc370.R
 import io.bsconsulting.cosc370.model.Trackable
+import io.bsconsulting.cosc370.persistence.TrackableViewModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.warn
 import java.time.Duration
@@ -21,10 +22,11 @@ class DashListAdapter internal constructor(context: Context)
     : RecyclerView.Adapter<DashListAdapter.DashViewHolder>(), AnkoLogger {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var trackables = emptyList<Trackable>() // Cached copy of words
+
+    private var trackables = emptyList<Trackable>()
 
     internal fun setTrackables(trackables: List<Trackable>){
-        this.trackables = trackables
+        this.trackables = trackables.filter { it.active }
         notifyDataSetChanged()
     }
 
@@ -39,6 +41,7 @@ class DashListAdapter internal constructor(context: Context)
     override fun onBindViewHolder(holder: DashViewHolder, position: Int) {
 
         val current = trackables[position]
+
         warn(String.format("Binding to %s", current.type))
         // set value of name
         holder.name.text = current.type
@@ -88,6 +91,7 @@ class DashListAdapter internal constructor(context: Context)
         val name: TextView = itemView.findViewById(R.id.textView)
         val progressBar: ProgressBar= itemView.findViewById(R.id.progressBar)
         val updateButton: Button = itemView.findViewById(R.id.updateButton)
+
 
     }
 

@@ -25,6 +25,7 @@ class TrackableListAdapter internal constructor(context: Context, viewModel: Tra
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var trackables = emptyList<Trackable>() // Cached copy of words
     private var viewModel = viewModel
+
     internal fun setTrackables(trackables: List<Trackable>){
         this.trackables = trackables
         notifyDataSetChanged()
@@ -58,6 +59,7 @@ class TrackableListAdapter internal constructor(context: Context, viewModel: Tra
 //            val newList: List<Trackable> = listOf(trackables.filterNot { it.type.equals(current.type) }, newTrackable).flatten()
 //            setTrackables(newList)
             viewModel.toggle(current.type, !current.active)
+            notifyDataSetChanged()
 
         })
 
