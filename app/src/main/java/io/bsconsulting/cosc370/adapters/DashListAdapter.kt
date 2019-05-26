@@ -1,20 +1,21 @@
 package io.bsconsulting.cosc370.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import io.bsconsulting.cosc370.R
+import io.bsconsulting.cosc370.activities.LogActivity
 import io.bsconsulting.cosc370.model.Trackable
-import io.bsconsulting.cosc370.persistence.TrackableViewModel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.warn
 import java.time.Duration
@@ -26,7 +27,7 @@ class DashListAdapter internal constructor(context: Context)
     : RecyclerView.Adapter<DashListAdapter.DashViewHolder>(), AnkoLogger {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-
+    private val ctx: Context = context
     private var trackables = emptyList<Trackable>()
 
     internal fun setTrackables(trackables: List<Trackable>){
@@ -49,6 +50,11 @@ class DashListAdapter internal constructor(context: Context)
         holder.progressBar.setProgress(holder.progressBar.max)
     }
 
+    private fun goToLogActivity(context: Context){
+        val intent = Intent(context, LogActivity::class.java)
+        startActivity(context, intent, null)
+    }
+
     override fun onBindViewHolder(holder: DashViewHolder, position: Int) {
 
         val current = trackables[position]
@@ -63,11 +69,12 @@ class DashListAdapter internal constructor(context: Context)
                 .setAction("Action", null)
                 .show()
         })
+        holder.logButton.setOnClickListener({goToLogActivity(context = this.ctx)})
 
 
         // set value of progress bar
         holder.progressBar.max = current.frequency
-        holder.progressBar.setScaleY(4f)
+
         holder.progressBar.setProgress(calculateProgress(current.lastActivity.first(), holder.progressBar.max))
 
         val MINUTES = 1L
@@ -111,15 +118,21 @@ class DashListAdapter internal constructor(context: Context)
 
     override fun getItemCount() = trackables.size
 
-
-
     inner class DashViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         val name: TextView = itemView.findViewById(R.id.textView)
         val progressBar: ProgressBar= itemView.findViewById(R.id.progressBar)
-        val updateButton: FloatingActionButton = itemView.findViewById(R.id.button)
+        val updateButton: ImageButton = itemView.findViewById(R.id.button)
+        val logButton: ImageButton = itemView.findViewById(R.id.logButton)
 
+        init {
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+            progressBar.setScaleY(4f)
+        }
+    }
 
+    companion object {
+        const val dashListAdapterRequestCode = 1
     }
 
 }

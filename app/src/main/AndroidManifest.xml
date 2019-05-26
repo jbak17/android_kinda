@@ -9,8 +9,20 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.LogActivity">
+        <activity
+                android:name=".activities.LogActivity"
+                android:label="@string/title_activity_log"
+                android:parentActivityName=".activities.DashActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="io.bsconsulting.cosc370.activities.DashActivity"/>
         </activity>
+        <!--<activity android:name=".activities.LogActivity">-->
+            <!--<meta-data-->
+                    <!--android:name="android.support.PARENT_ACTIVITY"-->
+                    <!--android:value="io.bsconsulting.cosc370.activities.DashActivity"/>-->
+        <!--</activity>-->
         <activity
                 android:name=".activities.DashActivity"
                 android:label="@string/title_activity_dash"
