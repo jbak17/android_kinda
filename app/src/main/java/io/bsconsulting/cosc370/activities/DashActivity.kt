@@ -28,6 +28,8 @@ class DashActivity : AppCompatActivity(), AnkoLogger {
         setSupportActionBar(toolbar)
         warn("Creating DashActivity")
 
+        val databaseHitToInitialise = trackableViewModel.initialiseDB();
+
         // Set up recycler view by
         // 1. Get reference from xml
         // 2. Create adapter to fill view with contents
@@ -50,6 +52,10 @@ class DashActivity : AppCompatActivity(), AnkoLogger {
                 SettingsActivity.newTrackableActivityRequestCode
             )
         }
+    }
+
+    companion object {
+        const val EXTRA_TRACKABLE = "io.bsconsulting.cosc370.EXTRA_TRACKABLE_TYPE"
     }
 
 }

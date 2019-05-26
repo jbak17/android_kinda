@@ -10,6 +10,9 @@ interface TrackableDao {
     @Query("SELECT * FROM trackable_table")
     fun getAllTrackables(): LiveData<List<Trackable>>
 
+    @Query("Select * from trackable_table ")
+    suspend fun getAll(): List<Trackable>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(trackable: Trackable)
 

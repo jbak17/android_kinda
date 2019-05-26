@@ -1,7 +1,6 @@
 package io.bsconsulting.cosc370.activities
 
 import android.content.Context
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +12,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.bsconsulting.cosc370.R
-import io.bsconsulting.cosc370.adapters.TrackableListAdapter
 import io.bsconsulting.cosc370.model.Trackable
 import io.bsconsulting.cosc370.persistence.TrackableViewModel
 
 import kotlinx.android.synthetic.main.activity_log.*
 import org.jetbrains.anko.AnkoLogger
+import java.time.LocalDateTime
 
-class LogActivity : AppCompatActivity() {
+import java.time.format.DateTimeFormatter
+
+
+class LogActivity : AppCompatActivity(), AnkoLogger {
 
     private val trackableViewModel: TrackableViewModel by lazy {
         ViewModelProviders.of(this).get(TrackableViewModel::class.java)
@@ -29,23 +31,24 @@ class LogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log)
-        setSupportActionBar(toolbar)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        // Type passed from Intent
+        val trackableType = getIntent().getStringExtra(DashActivity.EXTRA_TRACKABLE)
 
+        // set up recycler view
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = DateAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // link the recyclerView adapter to database
-        // The alltrackables is LiveDate, so SettingsActivity will be notified
-        // when the data changes. This is then passed to the adapter.
-        // when the list of trackables in the ViewModel changes this is passed to
-        // the adapter
+        //set up toolbar
+        toolbar.setTitle(String.format("%s log:", trackableType))
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         trackableViewModel.allTrackables.observe(this, Observer { trackables ->
             //update cache in adapter
-            trackables?.let { adapter.setTrackables(it) }
+            trackables?.let { adapter.setLoggables(trackables.filter { it.type.equals(trackableType) }.first()) }
         })
     }
 
@@ -56,10 +59,14 @@ class DateAdapter internal constructor(context: Context)
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val ctx: Context = context
-    private var trackables = emptyList<Trackable>()
+    private var loggableActivities = emptyList<LocalDateTime>()
 
-    internal fun setTrackables(trackables: List<Trackable>){
-        this.trackables = trackables.filter { it.active }
+    internal fun setLoggables(trackable: Trackable){
+
+        val times: List<LocalDateTime> = trackable.activity.sortedDescending()
+
+        this.loggableActivities = times
+
         notifyDataSetChanged()
     }
 
@@ -72,12 +79,16 @@ class DateAdapter internal constructor(context: Context)
 
     override fun onBindViewHolder(holder: DateAdapter.DateViewHolder, position: Int) {
 
-        val current = trackables[position]
+        val current = loggableActivities[position]
 
-        holder.name.text = current.lastActivity.first().toString()
+        val formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm")
+
+        val formatDateTime = current.format(formatter)
+
+        holder.name.text = formatDateTime
     }
 
-    override fun getItemCount(): Int = trackables.size
+    override fun getItemCount(): Int = loggableActivities.size
 
     inner class DateViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 

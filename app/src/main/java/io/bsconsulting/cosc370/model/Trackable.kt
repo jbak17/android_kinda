@@ -2,11 +2,9 @@ package io.bsconsulting.cosc370.model
 
 import android.os.Parcelable
 import androidx.room.*
-import io.bsconsulting.cosc370.persistence.DateConverter
 import io.bsconsulting.cosc370.persistence.DateListConverter
 import kotlinx.android.parcel.Parcelize
 import java.time.LocalDateTime
-import java.util.*
 
 @Parcelize
 @Entity(tableName="trackable_table")
@@ -17,10 +15,13 @@ data class Trackable(
     @ColumnInfo(name="trackable") val type: String,
     val active: Boolean = true,
     val frequency: Int = 60,
+    var activity: MutableList<LocalDateTime> = mutableListOf<LocalDateTime>(LocalDateTime.now())): Parcelable {
 
-    val lastActivity: List<LocalDateTime> = listOf<LocalDateTime>(LocalDateTime.now())): Parcelable {
-
-
+    init {
+        val now: LocalDateTime = LocalDateTime.now().plusHours(1)
+        activity.add(now)
+        activity.add(now.plusHours(1))
+    }
 }
 
 

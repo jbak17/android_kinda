@@ -18,4 +18,6 @@ class TrackableRepository (private val trackableDao: TrackableDao){
     suspend fun toggleStatus(trackableType: String, active: Boolean){
         trackableDao.toggleStatus(trackableType, active)
     }
+
+    suspend fun getAll() = trackableDao.getAll()
 }

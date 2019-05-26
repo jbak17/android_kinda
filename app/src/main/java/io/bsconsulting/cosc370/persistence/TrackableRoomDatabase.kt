@@ -10,7 +10,7 @@ import io.bsconsulting.cosc370.model.Trackable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Trackable::class], version=4)
+@Database(entities = [Trackable::class], version=5)
 abstract class TrackableRoomDatabase: RoomDatabase(){
 
     abstract fun trackableDao(): TrackableDao

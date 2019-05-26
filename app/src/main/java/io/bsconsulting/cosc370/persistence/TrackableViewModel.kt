@@ -34,4 +34,6 @@ class TrackableViewModel (application: Application): AndroidViewModel(applicatio
     fun toggle(trackableType: String, active: Boolean) = viewModelScope.launch {
         repository.toggleStatus(trackableType, active)
     }
+
+    fun initialiseDB() = viewModelScope.launch { repository.getAll() }
 }

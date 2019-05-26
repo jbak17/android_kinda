@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import io.bsconsulting.cosc370.R
+import io.bsconsulting.cosc370.activities.DashActivity
 import io.bsconsulting.cosc370.activities.LogActivity
 import io.bsconsulting.cosc370.model.Trackable
 import org.jetbrains.anko.AnkoLogger
@@ -50,8 +51,8 @@ class DashListAdapter internal constructor(context: Context)
         holder.progressBar.setProgress(holder.progressBar.max)
     }
 
-    private fun goToLogActivity(context: Context){
-        val intent = Intent(context, LogActivity::class.java)
+    private fun goToLogActivity(context: Context, type: String){
+        val intent = Intent(context, LogActivity::class.java).putExtra(DashActivity.EXTRA_TRACKABLE, type)
         startActivity(context, intent, null)
     }
 
@@ -69,13 +70,13 @@ class DashListAdapter internal constructor(context: Context)
                 .setAction("Action", null)
                 .show()
         })
-        holder.logButton.setOnClickListener({goToLogActivity(context = this.ctx)})
+        holder.logButton.setOnClickListener({goToLogActivity(this.ctx, current.type)})
 
 
         // set value of progress bar
         holder.progressBar.max = current.frequency
 
-        holder.progressBar.setProgress(calculateProgress(current.lastActivity.first(), holder.progressBar.max))
+        holder.progressBar.setProgress(calculateProgress(current.activity.first(), holder.progressBar.max))
 
         val MINUTES = 1L
         val HOURS = MINUTES * 60L
@@ -85,7 +86,7 @@ class DashListAdapter internal constructor(context: Context)
         val progressBarTimerTask = fixedRateTimer(name = "Progess bar updater",
             initialDelay = 1000*MINUTES, period = 1000*MINUTES
         ){
-            //holder.progressBar.setProgress(calculateProgress(current.lastActivity, holder.progressBar.max), true)
+            //holder.progressBar.setProgress(calculateProgress(current.activity, holder.progressBar.max), true)
             val currentProgress = holder.progressBar.progress
             holder.progressBar.setProgress(currentProgress-1, true)
             if(currentProgress < critical){
@@ -127,6 +128,7 @@ class DashListAdapter internal constructor(context: Context)
 
         init {
             progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+            progressBar.setProgress(progressBar.max)
             progressBar.setScaleY(4f)
         }
     }
