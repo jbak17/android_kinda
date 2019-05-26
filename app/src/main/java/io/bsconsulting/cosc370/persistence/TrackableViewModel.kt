@@ -3,6 +3,7 @@ package io.bsconsulting.cosc370.persistence
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import io.bsconsulting.cosc370.model.Trackable
 import io.bsconsulting.cosc370.persistence.TrackableRepository
@@ -24,5 +25,13 @@ class TrackableViewModel (application: Application): AndroidViewModel(applicatio
 
     fun insert(trackable: Trackable) = viewModelScope.launch {
         repository.insert(trackable)
+    }
+
+    fun update(trackable: Trackable) = viewModelScope.launch {
+        repository.update(trackable)
+    }
+
+    fun toggle(trackableType: String, active: Boolean) = viewModelScope.launch {
+        repository.toggleStatus(trackableType, active)
     }
 }

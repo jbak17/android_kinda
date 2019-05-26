@@ -1,19 +1,25 @@
 package io.bsconsulting.cosc370.model
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import io.bsconsulting.cosc370.persistence.DateConverter
 import kotlinx.android.parcel.Parcelize
+import java.time.LocalDateTime
 import java.util.*
 
 @Parcelize
 @Entity(tableName="trackable_table")
+@TypeConverters(DateConverter::class)
 data class Trackable(
     @PrimaryKey
-    @ColumnInfo(name="trackable") val type: String, val active: Boolean = true, val frequency: Int = 60): Parcelable {
+    @ColumnInfo(name="trackable") val type: String,
+    val active: Boolean = true,
+    val frequency: Int = 60,
+    val lastActivity: LocalDateTime = LocalDateTime.now()): Parcelable {
+
 
 }
+
 
 
 enum class TrackType(val type: String) {

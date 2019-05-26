@@ -10,4 +10,12 @@ class TrackableRepository (private val trackableDao: TrackableDao){
     suspend fun insert(trackable: Trackable){
         trackableDao.insert(trackable)
     }
+
+    suspend fun update(trackable: Trackable){
+        trackableDao.update(trackable)
+    }
+
+    suspend fun toggleStatus(trackableType: String, active: Boolean){
+        trackableDao.toggleStatus(trackableType, active)
+    }
 }

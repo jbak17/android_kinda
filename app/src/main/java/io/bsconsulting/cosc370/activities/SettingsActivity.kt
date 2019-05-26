@@ -16,9 +16,9 @@ import io.bsconsulting.cosc370.model.Trackable
 import io.bsconsulting.cosc370.persistence.TrackableViewModel
 import io.bsconsulting.cosc370.adapters.TrackableListAdapter
 
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_settings.*
 
-class MainActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     private val trackableViewModel: TrackableViewModel by lazy {
         ViewModelProviders.of(this).get(TrackableViewModel::class.java)
@@ -26,26 +26,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_settings)
         setSupportActionBar(toolbar)
+
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
+
 
         // Set up recycler view by
             // 1. Get reference from xml
             // 2. Create adapter to fill view with contents
             // 3. Add adapter and layout manager to recyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = TrackableListAdapter(this)
+        val adapter = TrackableListAdapter(this, trackableViewModel)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // link the recyclerView adapter to database
+        // The alltrackables is LiveDate, so SettingsActivity will be notified
+        // when the data changes. This is then passed to the adapter.
+        // when the list of trackables in the ViewModel changes this is passed to
+        // the adapter
         trackableViewModel.allTrackables.observe(this, Observer { trackables ->
             //update cache in adapter
             trackables?.let { adapter.setTrackables(it) }
         })
 
         fab.setOnClickListener {
-            val intent = Intent(this@MainActivity, AddTrackableActivity::class.java)
+            val intent = Intent(this@SettingsActivity, AddTrackableActivity::class.java)
             startActivityForResult(intent,
                 newTrackableActivityRequestCode
             )

@@ -1,24 +1,55 @@
 package io.bsconsulting.cosc370.activities
 
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import io.bsconsulting.cosc370.R
+import io.bsconsulting.cosc370.adapters.DashListAdapter
+import io.bsconsulting.cosc370.persistence.TrackableViewModel
 
-import kotlinx.android.synthetic.main.activity_dash.*
+import kotlinx.android.synthetic.main.activity_dash.fab
+import kotlinx.android.synthetic.main.activity_dash.toolbar
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.warn
 
-class DashActivity : AppCompatActivity() {
+class DashActivity : AppCompatActivity(), AnkoLogger {
+
+    private val trackableViewModel: TrackableViewModel by lazy {
+        ViewModelProviders.of(this).get(TrackableViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash)
         setSupportActionBar(toolbar)
+        warn("Creating DashActivity")
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        // Set up recycler view by
+        // 1. Get reference from xml
+        // 2. Create adapter to fill view with contents
+        // 3. Add adapter and layout manager to recyclerView
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val adapter = DashListAdapter(this)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        // link the recyclerView adapter to database
+        trackableViewModel.allTrackables.observe(this, Observer { trackables ->
+            //update cache in adapter
+            trackables?.let { adapter.setTrackables(it) }
+
+        })
+
+        fab.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivityForResult(intent,
+                SettingsActivity.newTrackableActivityRequestCode
+            )
         }
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
 }
