@@ -35,7 +35,7 @@ class DashActivity : AppCompatActivity(), AnkoLogger {
         // 2. Create adapter to fill view with contents
         // 3. Add adapter and layout manager to recyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = DashListAdapter(this)
+        val adapter = DashListAdapter(this, trackableViewModel)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 

@@ -25,14 +25,9 @@ abstract class TrackableRoomDatabase: RoomDatabase(){
             return INSTANCE ?: synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    TrackableRoomDatabase::class.java,
-                    "trackable_database"
-                ).fallbackToDestructiveMigration()
-                    .addCallback(
-                        TrackableDatabaseCallback(
-                            scope
-                        )
-                    )
+                    TrackableRoomDatabase::class.java, "trackable_database")
+                    .fallbackToDestructiveMigration()
+                    .addCallback(TrackableDatabaseCallback(scope))
                     .build()
 
                 INSTANCE = instance
@@ -43,8 +38,8 @@ abstract class TrackableRoomDatabase: RoomDatabase(){
 
         private class TrackableDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
 
                 INSTANCE?.let { database ->
                     scope.launch {

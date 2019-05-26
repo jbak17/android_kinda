@@ -9,6 +9,7 @@ import io.bsconsulting.cosc370.model.Trackable
 import io.bsconsulting.cosc370.persistence.TrackableRepository
 import io.bsconsulting.cosc370.persistence.TrackableRoomDatabase
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class TrackableViewModel (application: Application): AndroidViewModel(application){
 
@@ -18,6 +19,7 @@ class TrackableViewModel (application: Application): AndroidViewModel(applicatio
 
     init {
         val trackableDao = TrackableRoomDatabase.getDatabase(application, viewModelScope).trackableDao()
+
         repository = TrackableRepository(trackableDao)
 
         allTrackables = repository.allTrackable
@@ -33,6 +35,10 @@ class TrackableViewModel (application: Application): AndroidViewModel(applicatio
 
     fun toggle(trackableType: String, active: Boolean) = viewModelScope.launch {
         repository.toggleStatus(trackableType, active)
+    }
+
+    fun addTime(trackableType: String, active: MutableList<LocalDateTime>) = viewModelScope.launch {
+        repository.addTrackableItem(trackableType, active)
     }
 
     fun initialiseDB() = viewModelScope.launch { repository.getAll() }
