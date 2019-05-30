@@ -8,10 +8,13 @@ import android.os.Handler
 import android.view.Window
 import androidx.core.content.ContextCompat
 import io.bsconsulting.cosc370.activities.DashActivity
+import android.view.animation.AlphaAnimation
+import kotlinx.android.synthetic.main.activity_splash.*
+
 
 class SplashActivity : AppCompatActivity() {
 
-    private val SplashDuration = 2000L
+    private val SplashDuration = 3000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -22,6 +25,10 @@ class SplashActivity : AppCompatActivity() {
 
         // image
         setContentView(R.layout.activity_splash)
+        val fadeIn = AlphaAnimation(0.0f, 1.0f)
+        titleText.startAnimation(fadeIn)
+        fadeIn.duration = (SplashDuration * .7).toLong()
+        fadeIn.fillAfter = true
 
         scheduleSplashScreen()
     }
