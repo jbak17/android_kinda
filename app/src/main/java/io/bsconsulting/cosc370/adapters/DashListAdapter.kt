@@ -146,7 +146,7 @@ class DashListAdapter internal constructor(context: Context, viewModel: Trackabl
         init {
 //            progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
 //            progressBar.setProgress(progressBar.max)
-            progressBar.setScaleY(2f)
+
         }
     }
 

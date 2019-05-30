@@ -17,13 +17,25 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+<style name="kindaText" parent="TextAppearance.AppCompat">
+    <item name="android:font">@font/crafty_girls</item>
+</style>
 
     <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
     <style name="AppTheme.Launcher">
         <!--<item name="android:windowBackground">@drawable/launch_screen</item>-->
         <item name="colorPrimary">@color/colorPrimary</item>
+    </style>
+
+    <style name="settingsSwitch" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColorPrimaryDisableOnly">@color/purple</item>
+        <item name="android:colorControlActivated">@color/green</item>
+        <item name="android:colorForeground">@color/purple</item>
+        <item name="android:textAppearance">@style/kindaText</item>
     </style>
 
 </resources>

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.bsconsulting.cosc370.R
 import io.bsconsulting.cosc370.model.Trackable
 import io.bsconsulting.cosc370.persistence.TrackableViewModel
-import io.bsconsulting.cosc370.adapters.TrackableListAdapter
+import io.bsconsulting.cosc370.adapters.SettingsListAdapter
 
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
             // 2. Create adapter to fill view with contents
             // 3. Add adapter and layout manager to recyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = TrackableListAdapter(this, trackableViewModel)
+        val adapter = SettingsListAdapter(this, trackableViewModel)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
