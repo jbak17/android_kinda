@@ -7,7 +7,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:fontFamily="sans-serif-black"
+            android:fontFamily="@font/crafty_girls"
             android:padding="@dimen/small_padding"
             android:layout_marginTop="28dp"
             android:textSize="24sp"
@@ -55,13 +55,14 @@
                 android:layout_width="139dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/big_padding"
-                android:src="@drawable/ic_done_black_24dp"/>
+                android:src="@drawable/ic_done_black_24dp" android:backgroundTint="@color/green"/>
         <ImageButton
                 android:id="@+id/logButton"
                 android:layout_width="139dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/big_padding"
-                android:src="@drawable/ic_list_black_24dp"/>
+                android:src="@drawable/ic_list_black_24dp"
+                android:backgroundTint="@color/purple"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
