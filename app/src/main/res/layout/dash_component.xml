@@ -1,33 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content" android:orientation="vertical">
 
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/list_label_height"
+            android:layout_height="56dp"
             android:fontFamily="sans-serif-black"
             android:padding="@dimen/small_padding"
-            android:layout_marginBottom="@dimen/big_padding"
-            android:layout_marginTop="@dimen/big_padding"
-            android:textSize="24dp"
+            android:layout_marginTop="28dp"
+            android:textSize="24sp"
+            android:gravity="center"
             android:id="@+id/textView"
-            android:textStyle="bold"/>
-    <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/list_label_height"
-            android:padding="@dimen/small_padding"
-            android:layout_marginBottom="@dimen/big_padding"
-            android:layout_marginTop="@dimen/big_padding"
-            android:id="@+id/progressBar" android:minHeight="@dimen/progressBarHeight"/>
-
+            android:textStyle="bold" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"
+    />
 
     <LinearLayout
             android:orientation="horizontal"
+            android:id="@+id/progressBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/textView"
+            android:layout_marginTop="@dimen/small_padding" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0">
+        <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_label_height"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView"
+
+                android:id="@+id/progressBar" android:minHeight="@dimen/progressBarHeight"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" android:scaleY="2.5" android:layout_marginTop="28dp"/>
+
+    </LinearLayout>
+
+
+    <!--android:padding="@dimen/small_padding"-->
+    <!--android:layout_marginTop="48dp"-->
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/progressBarLayout"
+            android:layout_marginTop="28dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0">
         <ImageButton
                 android:id="@+id/button"
                 android:layout_width="139dp"
@@ -42,4 +64,4 @@
                 android:src="@drawable/ic_list_black_24dp"/>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
