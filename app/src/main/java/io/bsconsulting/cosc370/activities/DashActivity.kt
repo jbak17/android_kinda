@@ -1,8 +1,10 @@
 package io.bsconsulting.cosc370.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.bsconsulting.cosc370.R
 import io.bsconsulting.cosc370.adapters.DashListAdapter
 import io.bsconsulting.cosc370.persistence.TrackableViewModel
+import kotlinx.android.synthetic.main.activity_dash.*
 
-import kotlinx.android.synthetic.main.activity_dash.fab
-import kotlinx.android.synthetic.main.activity_dash.toolbar
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.warn
 
@@ -22,7 +23,10 @@ class DashActivity : AppCompatActivity(), AnkoLogger {
         ViewModelProviders.of(this).get(TrackableViewModel::class.java)
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash)
         setSupportActionBar(toolbar)
@@ -56,6 +60,7 @@ class DashActivity : AppCompatActivity(), AnkoLogger {
 
     companion object {
         const val EXTRA_TRACKABLE = "io.bsconsulting.cosc370.EXTRA_TRACKABLE_TYPE"
+
     }
 
 }
