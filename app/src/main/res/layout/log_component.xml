@@ -4,10 +4,11 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
-    <TextView
+    <TextView android:id="@+id/dateText"
+            android:fontFamily="@font/crafty_girls"
             android:text="TextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/dateText"
+            android:layout_height="match_parent"
             android:paddingTop="@dimen/big_padding"
             android:paddingBottom="@dimen/small_padding"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:typeface="monospace"
