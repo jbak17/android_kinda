@@ -18,14 +18,14 @@
             android:textSize="18sp" />
 
     <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberSigned"
-            android:padding="@dimen/small_padding"
-            android:layout_marginBottom="@dimen/big_padding"
-            android:layout_marginTop="@dimen/big_padding"
-            android:ems="10"
-            android:id="@+id/editText"/>
+            android:id="@+id/frequencyInput"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:inputType="numberSigned"
+    android:padding="@dimen/small_padding"
+    android:layout_marginBottom="@dimen/big_padding"
+    android:layout_marginTop="@dimen/big_padding"
+    android:ems="10"/>
 
     <ToggleButton
             android:id="@+id/set_active"

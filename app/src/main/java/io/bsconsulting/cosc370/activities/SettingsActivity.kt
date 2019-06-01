@@ -81,8 +81,10 @@ class SettingsActivity : AppCompatActivity() {
         // Adding new category
         if(requestCode == newTrackableActivityRequestCode && resultCode == Activity.RESULT_OK){
             data?.let {
-                val newTrackable = it.getStringExtra(AddTrackableActivity.EXTRA_REPLY)
-                val trackable = Trackable(newTrackable)
+                val newTrackableName = it.getStringExtra(AddTrackableActivity.EXTRA_NAME)
+                val newTrackableFrequency = it.getStringExtra(AddTrackableActivity.EXTRA_FREQUENCY)
+                val newTrackableActive = it.getBooleanExtra(AddTrackableActivity.EXTRA_ACTIVE, true)
+                val trackable = Trackable(newTrackableName, newTrackableActive, newTrackableFrequency.toLong())
                 trackableViewModel.insert(trackable)
             }
         } else {
