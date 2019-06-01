@@ -1,14 +1,12 @@
-package io.bsconsulting.cosc370
+package io.bsconsulting.cosc370.activities
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.Window
-import androidx.core.content.ContextCompat
-import io.bsconsulting.cosc370.activities.DashActivity
 import android.view.animation.AlphaAnimation
+import io.bsconsulting.cosc370.R
 import kotlinx.android.synthetic.main.activity_splash.*
 
 
