@@ -14,7 +14,7 @@ data class Trackable(
     @PrimaryKey
     @ColumnInfo(name="trackable") val type: String,
     val active: Boolean = true,
-    val frequency: Int = 2,
+    val frequency: Long = 2,
     var activity: MutableList<LocalDateTime> = mutableListOf<LocalDateTime>(LocalDateTime.now())): Parcelable {
 
 //    init {
@@ -22,6 +22,10 @@ data class Trackable(
 //        activity.add(now)
 //        activity.add(now.plusHours(1))
 //    }
+
+    fun getMostRecentEvent(): LocalDateTime = activity.sortedDescending().first()
+
+    fun getNextEventTime(): LocalDateTime = getMostRecentEvent().plusMinutes(frequency)
 }
 
 

@@ -3,13 +3,17 @@ package io.bsconsulting.cosc370.adapters
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -22,8 +26,10 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.warn
 import java.time.Duration
 import java.time.LocalDateTime
+import java.util.*
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.absoluteValue
+
 
 class DashListAdapter internal constructor(context: Context, viewModel: TrackableViewModel)
     : RecyclerView.Adapter<DashListAdapter.DashViewHolder>(), AnkoLogger {
@@ -32,6 +38,29 @@ class DashListAdapter internal constructor(context: Context, viewModel: Trackabl
     private val ctx: Context = context
     private val viewModel: TrackableViewModel = viewModel
     private var trackables = emptyList<Trackable>()
+
+
+    // Color vals
+    private val red: Int = ContextCompat.getColor(ctx, R.color.red)
+    private val yellow: Int = ContextCompat.getColor(ctx, R.color.yellow)
+    private val green: Int = ContextCompat.getColor(ctx, R.color.green)
+
+    private fun pulsate(textView: TextView){
+        val frequency = 2000L
+        textView.setTextColor(red)
+
+        val fadeIn = AlphaAnimation(0.0f, 1.0f)
+        fadeIn.duration = (frequency)
+        fadeIn.fillAfter = true
+
+        val fadeOut = AlphaAnimation(1.0f, 0.0f)
+        fadeOut.duration = (frequency)
+        fadeOut.fillAfter = true
+
+        textView.startAnimation(fadeOut)
+        textView.startAnimation(fadeIn)
+    }
+
 
     internal fun setTrackables(trackables: List<Trackable>){
         this.trackables = trackables.filter { it.active }
@@ -46,92 +75,105 @@ class DashListAdapter internal constructor(context: Context, viewModel: Trackabl
 
     }
 
-    // trackable with a new date item. //
-    private fun updateTrackable(holder: DashViewHolder){
+    override fun onBindViewHolder(dashElementToDisplay: DashViewHolder, position: Int) {
 
-        // Update progress bar
-        updateProgressBar(holder)
+        val current = trackables[position]
 
-        createNewDateEntry(holder)
+        var lastEvent = current.getMostRecentEvent()
+        var nextEvent: LocalDateTime = current.getNextEventTime()
+
+        warn(String.format("Binding to %s", current.type))
+        // set value of name
+        dashElementToDisplay.name.text = current.type
+
+        // set progress bar
+        var progressBarTimer = setProgressBarValuesAndTimer(dashElementToDisplay,lastEvent,nextEvent)
+
+        // set action button
+        dashElementToDisplay.updateButton.setOnClickListener {
+
+            createNewTrackableEntry(dashElementToDisplay)
+
+            progressBarTimer.cancel()
+            lastEvent = LocalDateTime.now()
+            nextEvent = lastEvent.plusMinutes(current.frequency)
+            progressBarTimer = setProgressBarValuesAndTimer(dashElementToDisplay,lastEvent,nextEvent)
+
+            Snackbar.make(it, String.format("%s successfully updated!", dashElementToDisplay.name.text), Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show()
+        }
+
+        dashElementToDisplay.logButton.setOnClickListener({goToLogActivity(this.ctx, current.type)})
+
+
     }
 
-    private fun createNewDateEntry(holder: DashViewHolder){
-        val trackable: Trackable = trackables.filter { it.type.equals(holder.name.text) }.first()
-        val times = trackable.activity
-        times.add(LocalDateTime.now())
-        viewModel.addTime(trackable.type, times)
-        notifyDataSetChanged()
-
-    }
-
-
-    private fun updateProgressBar(holder: DashViewHolder) {
-
-        holder.progressBar.setProgress(holder.progressBar.max)
-        holder.progressBar.setProgressTintList(ColorStateList.valueOf(R.color.colorAccent));
-    }
 
     private fun goToLogActivity(context: Context, type: String){
         val intent = Intent(context, LogActivity::class.java).putExtra(DashActivity.EXTRA_TRACKABLE, type)
         startActivity(context, intent, null)
     }
 
-    override fun onBindViewHolder(holder: DashViewHolder, position: Int) {
+    // trackable with a new date item. //
+    private fun createNewTrackableEntry(holder: DashViewHolder){
 
-        val current = trackables[position]
+        val trackable: Trackable = trackables.filter { it.type.equals(holder.name.text) }.first()
+        val times = trackable.activity
+        times.add(LocalDateTime.now())
 
-        warn(String.format("Binding to %s", current.type))
-        // set value of name
-        holder.name.text = current.type
-        // set action button
-        holder.updateButton.setOnClickListener({
-            updateTrackable(holder)
-            Snackbar.make(it, String.format("%s successfully updated!", holder.name.text), Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
-        })
-        holder.logButton.setOnClickListener({goToLogActivity(this.ctx, current.type)})
+        viewModel.addTime(trackable.type, times)
+
+        notifyDataSetChanged()
+
+    }
 
 
-        // set value of progress bar
-        holder.progressBar.max = current.frequency
-//        holder.progressBar.setProgress(calculateProgress(current.activity.first(), holder.progressBar.max))
-        holder.progressBar.setProgress(calculateProgress(current), true)
+    private fun setProgressBarValuesAndTimer(
+        dashViewHolder: DashViewHolder,
+        lastEvent: LocalDateTime,
+        nextEvent: LocalDateTime
+    ): Timer {
 
-        val MINUTES = 60L
-        val HOURS = MINUTES * 60L
-        val critical: Int = (current.frequency*.15).toInt()
-        val warn: Int = (current.frequency*.3).toInt()
+        val maxGapBetweenEvents: Double = (Duration.between(lastEvent, nextEvent).toMillis()/1000.0).absoluteValue
+        val calculatePercentage: (Int) -> Int = percentage(maxGapBetweenEvents)
 
-        val progressBarTimerTask = fixedRateTimer(name = "Progess bar updater",
-            initialDelay = 1000*MINUTES, period = 1000*MINUTES
+
+
+        val critical: Int = 15
+        val warn: Int = 40
+
+        return fixedRateTimer(name = "Progess bar updater",
+            initialDelay = 0, period = 1000
         ){
-            //holder.progressBar.setProgress(calculateProgress(current.activity, holder.progressBar.max), true)
-            val currentProgress = calculateProgress(current)
-            holder.progressBar.setProgress(currentProgress, true)
-            if(currentProgress < critical){
-                holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+
+            // set value of progress bar
+            // progress bar has max of 100, and we need an integer representing a % of progress
+            val timeToNextEvent: Int = (Duration.between(LocalDateTime.now(), nextEvent).toMillis()/1000).toInt().absoluteValue
+            val currentProgress: Int = 100 - calculatePercentage(timeToNextEvent)
+            dashViewHolder.progressBar.setProgress(currentProgress, true)
+
+            // format colors of bars
+            warn(String.format("Updating progress: \n \t Type: %s \n\t Progress: %d", dashViewHolder.name.text, currentProgress))
+            if (currentProgress <= 0){
+                dashViewHolder.name.setTextColor(red)
+                dashViewHolder.name.visibility = VISIBLE
+                this.cancel()
+            }
+            else if(currentProgress < critical){
+                dashViewHolder.progressBar.setProgressTintList(ColorStateList.valueOf(red));
+                pulsate(dashViewHolder.name)
             } else if(currentProgress < warn) {
-                holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+                dashViewHolder.progressBar.setProgressTintList(ColorStateList.valueOf(yellow));
             } else {
-                holder.progressBar.setProgressTintList(ColorStateList.valueOf(R.color.colorAccent));
+                dashViewHolder.progressBar.setProgressTintList(ColorStateList.valueOf(green));
             }
         }
 
     }
 
-    /**
-     * param eventTime: when last event happened
-     */
-    fun calculateProgress(trackable: Trackable): Int {
-
-        val then = trackable.activity.sortedDescending().first();
-        val now: LocalDateTime= LocalDateTime.now()
-
-        val durationToEvent: Double = Duration.between(then, now).toMinutes().toDouble().absoluteValue
-
-        warn(String.format("%s: %d", trackable.type, (trackable.frequency - durationToEvent).toInt()))
-        return (trackable.frequency - durationToEvent).toInt()
+    private fun percentage(max: Double): (Int) -> Int {
+        return { actual: Int -> (((max - actual)/max)*100).toInt()}
     }
 
     override fun getItemCount() = trackables.size
@@ -143,15 +185,8 @@ class DashListAdapter internal constructor(context: Context, viewModel: Trackabl
         val updateButton: ImageButton = itemView.findViewById(R.id.button)
         val logButton: ImageButton = itemView.findViewById(R.id.logButton)
 
-        init {
-//            progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-//            progressBar.setProgress(progressBar.max)
-
-        }
     }
 
-    companion object {
-        const val dashListAdapterRequestCode = 1
-    }
 
 }
+

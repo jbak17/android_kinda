@@ -36,7 +36,10 @@
 
                 android:id="@+id/progressBar" android:minHeight="@dimen/progressBarHeight"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.0" android:scaleY="2.5" android:layout_marginTop="28dp"/>
+                app:layout_constraintHorizontal_bias="0.0" android:scaleY="2.5" android:layout_marginTop="28dp"
+                android:indeterminate="false"
+                android:max="100"
+                android:progressTint="@color/green"/>
 
     </LinearLayout>
 
