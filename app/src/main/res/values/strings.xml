@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Kinda</string>
     <string name="action_settings">Settings</string>
+    <string name="action_checklist">Checklists</string>
 
     <string name="hint_type">Activity...</string>
     <string name="button_save">Save</string>
