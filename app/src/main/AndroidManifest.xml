@@ -5,20 +5,32 @@
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
+            android:label="@string/action_checklist"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activities.SplashActivity"
-                  android:noHistory="true"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activities.ChecklistActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="io.bsconsulting.cosc370.activities.ChecklistSelectionActivity"/>
+        </activity>
+        <activity android:name=".activities.ChecklistSelectionActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="io.bsconsulting.cosc370.activities.DashActivity"/>
+        </activity>
+        <activity
+                android:name=".activities.SplashActivity"
+                android:noHistory="true"
+                android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LogActivity"
+        <activity
+                android:name=".activities.LogActivity"
                 android:label="@string/title_activity_log"
                 android:parentActivityName=".activities.DashActivity"
                 android:theme="@style/AppTheme.NoActionBar">
@@ -26,11 +38,11 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="io.bsconsulting.cosc370.activities.DashActivity"/>
         </activity>
-        <activity android:name=".activities.DashActivity"
+        <activity
+                android:name=".activities.DashActivity"
                 android:label="@string/title_activity_dash"
                 android:parentActivityName=".activities.SettingsActivity"
                 android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="io.bsconsulting.cosc370.activities.SettingsActivity"/>
@@ -39,13 +51,16 @@
         </activity>
         <activity
                 android:name=".activities.SettingsActivity"
-                android:label="@string/app_name"
+                android:label="@string/action_settings"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.DashActivity"/>
         </activity>
-        <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
+
+        <meta-data
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts"/>
     </application>
 
 </manifest>
